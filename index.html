@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+*{margin:0;padding:0;box-sizing:border-box}
 :root{--coral:#E8668B;--coral-light:#F2A0B5;--coral-dark:#C44D6E;--navy:#1A1A2E;--navy-light:#2A2A45;--cream:#FAF7F2;--cream-dark:#F0EBE1;--stone:#8C8279;--stone-light:#B5ADA5;--white:#FFF;--sand:#E8DDD0;--green:#25D366;--r:14px}
-#plvBot *{margin:initial;padding:initial;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy)}
 h1,h2,h3,h4,h5{font-family:'Cormorant Garamond',serif;font-weight:500}
 
 /* FAB */
@@ -155,12 +155,15 @@ h1,h2,h3,h4,h5{font-family:'Cormorant Garamond',serif;font-weight:500}
 /* MOBILE */
 @media(max-width:768px){.plv-panel{width:calc(100vw - 16px);height:calc(100dvh - 100px);max-height:620px;right:8px;bottom:76px;border-radius:16px}.plv-fab{right:16px;bottom:16px;width:56px;height:56px}.og{height:220px}.os{border-radius:16px}}
 @media(max-width:430px){.plv-panel{width:calc(100vw - 12px);height:calc(100dvh - 90px);max-height:580px;right:6px;bottom:70px}.plv-fab{right:12px;bottom:12px;width:52px;height:52px}.og{height:200px}.os-specs{grid-template-columns:repeat(2,1fr)}.os{max-height:85vh}}
+body .plv-fab,body .plv-panel,body .ov{all:revert;all:unset}
+body .plv-fab{position:fixed!important;bottom:24px!important;right:24px!important;width:64px!important;height:64px!important;border-radius:50%!important;border:none!important;cursor:pointer!important;z-index:9998!important;background:#1A1A2E!important;display:flex!important;align-items:center!important;justify-content:center!important}
+body .plv-panel{position:fixed!important;z-index:9999!important}
+body .ov{position:fixed!important;inset:0!important;z-index:10000!important}
 </style>
 </head>
 
 
 <body>
-<div id="plvBot">
 <button class="plv-fab" id="fab"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
 
 <div class="plv-panel" id="panel">
@@ -173,7 +176,6 @@ h1,h2,h3,h4,h5{font-family:'Cormorant Garamond',serif;font-weight:500}
 
 <!-- OVERLAY -->
 <div class="ov" id="overlay"><div class="os" id="sheet"></div></div>
-</div>
 <script>
 const C={WA:'+5213221401809',EMAIL:'marco@pacificluxuryvillas.com',APPS_SCRIPT:''};
 const IMG='images/'; // Relative path to images folder in repo
