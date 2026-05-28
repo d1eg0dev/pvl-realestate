@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pacific Luxury Villas — Real Estate Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#E8668B;--coral-light:#F2A0B5;--coral-dark:#C44D6E;--navy:#1A1A2E;--navy-light:#2A2A45;--cream:#FAF7F2;--cream-dark:#F0EBE1;--stone:#8C8279;--stone-light:#B5ADA5;--white:#FFF;--sand:#E8DDD0;--green:#25D366;--r:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--navy)}
+h1,h2,h3,h4,h5{font-family:'Cormorant Garamond',serif;font-weight:500}
+
+/* FAB */
+.plv-fab{position:fixed;bottom:24px;right:24px;width:64px;height:64px;border-radius:50%;border:none;cursor:pointer;z-index:9998;background:var(--navy);box-shadow:0 8px 30px rgba(0,0,0,.2),0 0 0 0 rgba(232,102,139,.4);display:flex;align-items:center;justify-content:center;transition:all .4s cubic-bezier(.34,1.56,.64,1);animation:fp 3s ease-in-out infinite}
+.plv-fab:hover{transform:scale(1.08)}.plv-fab.open{animation:none}
+.plv-fab svg{width:28px;height:28px;fill:none;stroke:var(--coral);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s}
+.plv-fab.open svg{transform:rotate(90deg)}
+@keyframes fp{0%,100%{box-shadow:0 8px 30px rgba(0,0,0,.2),0 0 0 0 rgba(232,102,139,.3)}50%{box-shadow:0 8px 30px rgba(0,0,0,.2),0 0 0 12px rgba(232,102,139,0)}}
+
+/* PANEL */
+.plv-panel{position:fixed;bottom:100px;right:24px;width:min(440px,calc(100vw - 32px));height:min(700px,calc(100dvh - 130px));background:var(--cream);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.15);display:flex;flex-direction:column;overflow:hidden;z-index:9999;opacity:0;transform:translateY(20px) scale(.96);pointer-events:none;transition:all .4s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(232,102,139,.1)}
+.plv-panel.vis{opacity:1;transform:none;pointer-events:all}
+
+/* HEAD */
+.ph{background:var(--navy);flex-shrink:0;position:relative}
+.ph::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--coral),transparent)}
+.pht{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px}
+.phb{display:flex;align-items:center;gap:12px}
+.phl{color:var(--coral);font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;font-style:italic}
+.phd{width:1px;height:22px;background:rgba(255,255,255,.1)}
+.phi h3{font-size:14px;color:var(--cream);font-weight:500}.phi span{font-size:11px;color:var(--stone-light);display:flex;align-items:center;gap:5px;margin-top:2px}
+.phi .dot{width:6px;height:6px;background:#4ADE80;border-radius:50%}
+.phx{background:rgba(255,255,255,.08);border:none;color:var(--stone-light);width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px}
+.phx:hover{background:rgba(255,255,255,.15)!important;color:var(--cream)}
+.pls{display:flex;padding:0 18px 12px}
+.plb{flex:1;padding:6px 0;background:0;border:1px solid rgba(232,102,139,.2);color:var(--stone-light);font-size:11px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.06em;text-transform:uppercase}
+.plb:first-child{border-radius:6px 0 0 6px;border-right:none}.plb:last-child{border-radius:0 6px 6px 0}
+.plb.on{background:var(--coral);border-color:var(--coral);color:var(--white);font-weight:600}
+.plb:hover:not(.on){background:rgba(232,102,139,.08)!important;color:var(--cream)!important}
+
+/* BODY */
+.pb{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;scroll-behavior:smooth}
+.pb::-webkit-scrollbar{width:3px}.pb::-webkit-scrollbar-thumb{background:var(--sand);border-radius:3px}
+
+/* MESSAGES */
+.m{display:flex;gap:8px;margin-bottom:14px;animation:mi .3s forwards;opacity:0}
+@keyframes mi{to{opacity:1;transform:translateY(0)}}
+.m{transform:translateY(10px)}
+.m.b{flex-direction:row}.m.u{flex-direction:row-reverse}
+.ma{width:28px;height:28px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.m.b .ma{background:var(--navy);color:var(--coral)}.m.u .ma{background:var(--sand);color:var(--stone)}
+.mb{flex:1;min-width:0}
+.mx{max-width:100%;width:fit-content;padding:10px 14px;font-size:13px;line-height:1.6;word-wrap:break-word}
+.m.b .mx{background:var(--white);color:var(--navy);border-radius:2px 14px 14px 14px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.m.u .mx{background:var(--navy);color:var(--cream);border-radius:14px 2px 14px 14px;margin-left:auto}
+.qr{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.qb{background:var(--white);border:1.5px solid var(--sand);color:var(--navy);padding:7px 14px;border-radius:18px;font-size:11.5px;font-weight:500;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.qb:hover{background:var(--navy)!important;border-color:var(--navy)!important;color:var(--coral)!important;transform:translateY(-1px)}
+
+/* PROPERTY CARD */
+.pc{background:var(--white);border-radius:12px;overflow:hidden;margin-top:8px;box-shadow:0 4px 16px rgba(0,0,0,.06);cursor:pointer;transition:all .3s;border:1px solid rgba(0,0,0,.03)}
+.pc:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.1)}
+.pci{position:relative;height:140px;overflow:hidden;background:var(--navy-light)}
+.pci img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.pc:hover .pci img{transform:scale(1.05)}
+.pci .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px}
+.pci .placeholder svg{width:32px;height:32px;stroke:var(--coral);fill:none;stroke-width:1.2}
+.pci .placeholder span{color:var(--coral);font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic}
+.pcb{position:absolute;top:10px;left:10px;background:rgba(26,26,46,.88);color:var(--coral);padding:3px 10px;border-radius:16px;font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(6px)}
+.pcn{padding:12px 14px}
+.pcn h4{font-size:15px;color:var(--navy);margin-bottom:4px}
+.pcsp{display:flex;gap:10px;font-size:11px;color:var(--stone);flex-wrap:wrap;margin-bottom:6px}
+.pcsp svg{width:11px;height:11px;stroke:var(--coral);fill:none;stroke-width:2;vertical-align:-1px;margin-right:2px}
+.pcp{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--coral-dark)}
+
+/* FORM */
+.qf{background:var(--white);border-radius:12px;padding:18px;margin-top:8px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.qf h4{font-size:16px;margin-bottom:2px}.qf .fs{font-size:12px;color:var(--stone);margin-bottom:14px}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:10px;font-weight:600;color:var(--stone);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1.5px solid var(--sand);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);outline:0;background:var(--cream);transition:all .2s}
+.fg textarea{resize:vertical;min-height:56px}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--coral);background:var(--white);box-shadow:0 0 0 3px rgba(232,102,139,.08)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qc{width:100%;padding:12px;background:var(--navy);color:var(--coral);border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;text-transform:uppercase;transition:all .2s;margin-top:4px}
+.qc:hover{background:var(--coral);color:var(--white)}
+
+/* CONTACT CARD */
+.ccrd{background:var(--navy);border-radius:12px;padding:18px;margin-top:8px;color:var(--cream)}
+.ccrd h4{color:var(--coral-light);margin-bottom:10px}
+.ccrd-r{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:12px;border-bottom:1px solid rgba(255,255,255,.05)}
+.ccrd-r:last-child{border:none}
+.ccrd-r svg{width:14px;height:14px;stroke:var(--coral);fill:none;stroke-width:2;flex-shrink:0}
+.ccrd-r a{color:var(--coral-light);text-decoration:none}.ccrd-r a:hover{text-decoration:underline}
+
+/* SEND BTNS */
+.sbtns{display:flex;gap:6px;margin-top:10px}
+.sb{flex:1;padding:10px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center;text-decoration:none;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;border:none;color:white}
+.sb-wa{background:var(--green)}.sb-wa:hover{background:#1DA851}
+.sb-em{background:var(--navy);color:var(--coral)}.sb-em:hover{background:var(--coral);color:white}
+
+/* INPUT */
+.pi{flex-shrink:0;padding:10px 14px;background:var(--white);border-top:1px solid var(--cream-dark);display:flex;gap:8px;align-items:center}
+.pi input{flex:1;padding:10px 14px;border:1.5px solid var(--sand);border-radius:18px;font-size:13px;font-family:'DM Sans',sans-serif;outline:0;background:var(--cream);color:var(--navy);transition:all .2s}
+.pi input:focus{border-color:var(--coral);background:var(--white)}
+.pi button{width:36px;height:36px;border-radius:50%;background:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.pi button:hover{background:var(--coral)}
+.pi button svg{width:16px;height:16px;fill:none;stroke:var(--coral);stroke-width:2}.pi button:hover svg{stroke:white}
+.pf{text-align:center;padding:7px;font-size:9px;color:var(--stone-light);background:var(--white);border-top:1px solid var(--cream-dark);flex-shrink:0}
+.pf a{color:var(--coral);text-decoration:none}
+
+/* ===== OVERLAY PROPERTY SHEET ===== */
+.ov{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;animation:ofi .3s forwards}
+.ov.vis{display:flex}
+@keyframes ofi{from{opacity:0}to{opacity:1}}
+.os{background:var(--cream);border-radius:20px;width:min(480px,100%);max-height:min(90vh,800px);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,.3);animation:osi .35s cubic-bezier(.34,1.56,.64,1) forwards;transform:scale(.95)}
+@keyframes osi{to{transform:scale(1)}}
+
+/* Gallery */
+.og{position:relative;height:280px;background:var(--navy);overflow:hidden;flex-shrink:0}
+.og img{width:100%;height:100%;object-fit:cover;transition:opacity .3s}
+.og .placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--coral);font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic}
+.og-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(26,26,46,.75);border:none;color:var(--coral);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;backdrop-filter:blur(4px);transition:all .2s}
+.og-nav:hover{background:var(--coral);color:white}
+.og-prev{left:12px}.og-next{right:12px}
+.og-counter{position:absolute;bottom:12px;right:12px;background:rgba(26,26,46,.75);color:var(--coral);padding:4px 10px;border-radius:12px;font-size:10px;font-weight:600;backdrop-filter:blur(4px)}
+.og-badge{position:absolute;top:14px;left:14px;background:rgba(26,26,46,.88);color:var(--coral);padding:5px 14px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;backdrop-filter:blur(6px)}
+.og-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(26,26,46,.75);border:none;color:var(--cream);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:all .2s}
+.og-close:hover{background:var(--coral)}
+
+/* Sheet body */
+.osb{flex:1;overflow-y:auto;padding:20px}
+.osb::-webkit-scrollbar{width:3px}.osb::-webkit-scrollbar-thumb{background:var(--sand);border-radius:3px}
+.os-name{font-size:24px;color:var(--navy);margin-bottom:2px}
+.os-loc{font-size:13px;color:var(--stone);margin-bottom:16px}
+.os-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.os-spec{background:var(--white);border-radius:10px;padding:12px 8px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.os-spec .v{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--navy)}
+.os-spec .l{font-size:9px;color:var(--stone);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.os-section{margin-bottom:16px}
+.os-section h5{font-size:13px;color:var(--coral-dark);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--sand)}
+.os-amen{font-size:13px;color:var(--navy);line-height:1.8}
+.os-desc{font-size:13.5px;color:var(--navy);line-height:1.7;margin-bottom:16px}
+.os-price{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--coral-dark);text-align:center;padding:14px;background:var(--white);border-radius:10px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.os-video{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--navy);border-radius:8px;color:var(--coral);font-size:12px;font-weight:600;text-decoration:none;margin-bottom:14px;transition:all .2s}
+.os-video:hover{background:var(--coral);color:white}
+.os-cta{width:100%;padding:14px;background:var(--coral);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;transition:all .2s}
+.os-cta:hover{background:var(--coral-dark);transform:translateY(-1px);box-shadow:0 8px 20px rgba(232,102,139,.3)}
+
+/* Typing */
+.typing{display:flex;gap:4px;padding:10px 14px}.typing span{width:5px;height:5px;background:var(--stone-light);border-radius:50%;animation:tb 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+/* MOBILE */
+@media(max-width:768px){.plv-panel{width:calc(100vw - 16px);height:calc(100dvh - 100px);max-height:620px;right:8px;bottom:76px;border-radius:16px}.plv-fab{right:16px;bottom:16px;width:56px;height:56px}.og{height:220px}.os{border-radius:16px}}
+@media(max-width:430px){.plv-panel{width:calc(100vw - 12px);height:calc(100dvh - 90px);max-height:580px;right:6px;bottom:70px}.plv-fab{right:12px;bottom:12px;width:52px;height:52px}.og{height:200px}.os-specs{grid-template-columns:repeat(2,1fr)}.os{max-height:85vh}}
+</style>
+</head>
+<body>
+
+<button class="plv-fab" id="fab"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
+
+<div class="plv-panel" id="panel">
+<div class="ph"><div class="pht"><div class="phb"><div class="phl">PLV</div><div class="phd"></div><div class="phi"><h3>Real Estate</h3><span><span class="dot"></span><span id="stx">Available 24/7</span></span></div></div><button class="phx" id="closeBtn">✕</button></div>
+<div class="pls"><button class="plb on" data-l="en">ENGLISH</button><button class="plb" data-l="es">ESPAÑOL</button></div></div>
+<div class="pb" id="body"></div>
+<div class="pi"><input id="inp" placeholder="Ask about properties..."><button id="sbtn"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div>
+<div class="pf">Pacific Luxury Villas · <a href="https://pacificluxuryvillas.com" target="_blank">pacificluxuryvillas.com</a> · powered by <a href="https://wdstudio.agency" target="_blank">wdstudio.agency</a></div>
+</div>
+
+<!-- OVERLAY -->
+<div class="ov" id="overlay"><div class="os" id="sheet"></div></div>
+
+<script>
+const C={WA:'+5213221401809',EMAIL:'marco@pacificluxuryvillas.com',APPS_SCRIPT:''};
+const IMG='images/'; // Relative path to images folder in repo
+
+const P={en:[
+{id:'sol',name:'Casita El Sol',badge:'Casita',loc:'Costa Careyes',size:'102 m²',sizeft:'1,092 sqft',beds:'1',baths:'1',price:'Price Upon Request',
+ desc:'Charming 1-bedroom casita with open dining and living area plus a small terrace. An ideal vacation retreat or rental investment opportunity in the heart of Costa Careyes.',
+ amen:['Open dining & living area','Small terrace','1 Suite with ensuite bathroom','Tropical surroundings'],
+ imgs:['elsol_1.jpg','elsol_2.jpg','elsol_3.jpg','elsol_4.jpg','elsol_5.jpg','elsol_6.jpg','elsol_7.jpg','elsol_8.jpg','elsol_9.jpg']},
+{id:'caracol',name:'Casita Caracol',badge:'Remodeled',loc:'Costa Careyes',size:'177 m²',sizeft:'1,910 sqft',beds:'2',baths:'2',price:'Price Upon Request',
+ desc:'Recently remodeled 2-bedroom casita featuring modern finishes, central air conditioning, and a beautiful open-concept living space. Move-in ready with contemporary design.',
+ amen:['Recently remodeled','Central air conditioning','Open dining & living area','2 Suites with ensuite bathrooms','Modern finishes throughout'],
+ imgs:['Caracol_1.JPG','Caracol_2.JPG','Caracol_3.JPG','Caracol_4.JPG','Caracol_5.JPG','Caracol_6.JPG','Caracol_7.JPG','Caracol_8.JPG','Caracol_9.JPG']},
+{id:'lote',name:'Lote 137',badge:'Land',loc:'Rincón de Careyes',size:'3,228 m²',sizeft:'34,743 sqft',beds:'—',baths:'—',price:'Price Upon Request',
+ desc:'Prime development lot in Rincón de Careyes with all construction permits already approved and a project underway. A rare opportunity to build your dream home in one of Mexico\'s most exclusive coastal communities.',
+ amen:['Location: Rincón de Careyes','All permits approved','Project underway','Build-ready lot','Ocean proximity'],
+ imgs:['lote137_1.png','lote137_2.JPG','lote137_3.jpeg']},
+{id:'glorias',name:'Casa Glorias',badge:'Estate',loc:'Península de las Estrellas',size:'7,804 m²',sizeft:'83,991 sqft',beds:'8',baths:'Multiple',price:'Price Upon Request',
+ desc:'Magnificent estate on the prestigious Península de las Estrellas. This extraordinary property features 8 suites, a private gym, cinema, tennis and racquetball courts, steam room, staff quarters, and panoramic ocean views.',
+ amen:['8 Suites','Private gym','Home cinema','Family room','Racquetball court','Tennis court','Steam room','Private office','Staff quarters','BBQ area','Massage room'],
+ imgs:['LasGlorias_1.JPG','LasGlorias_2','LasGlorias_3','LasGlorias_4','LasGlorias_5','LasGlorias_6','LasGlorias_7.jpg','LasGlorias_8','LasGlorias_9','LasGlorias_10','LasGlorias_11.jpg','LasGlorias_12','LasGlorias_13','LasGlorias_14','LasGlorias_15.jpg'],
+ video:'https://youtu.be/gFzDY3cc-5g'},
+{id:'condo',name:'Careyes Residences',badge:'New Build',loc:'Costa Careyes',size:'3 Floors',sizeft:'Condo',beds:'4',baths:'Multiple',price:'Price Upon Request',
+ desc:'Brand new condominium in the exclusive Careyes Residences development. Three-floor layout featuring a rooftop terrace, private garage, gym, staff quarters, and premium finishes throughout. Estimated completion: 15 months.',
+ amen:['Basement: Gym, storage, laundry, 2 staff rooms, TV room','Ground floor: Garage, living-dining, kitchen, master suite, terrace, 2 suites','Upper floor: Suite + roof terrace','Est. completion: 15 months','Premium finishes'],
+ imgs:[]}
+],es:[
+{id:'sol',name:'Casita El Sol',badge:'Casita',loc:'Costa Careyes',size:'102 m²',sizeft:'1,092 sqft',beds:'1',baths:'1',price:'Precio Bajo Consulta',
+ desc:'Encantadora casita de 1 recámara con comedor y sala abiertos más una pequeña terraza. Ideal como retiro vacacional o inversión en el corazón de Costa Careyes.',
+ amen:['Comedor y sala abiertos','Pequeña terraza','1 Suite con baño','Entorno tropical'],
+ imgs:['elsol_1.jpg','elsol_2.jpg','elsol_3.jpg','elsol_4.jpg','elsol_5.jpg','elsol_6.jpg','elsol_7.jpg','elsol_8.jpg','elsol_9.jpg']},
+{id:'caracol',name:'Casita Caracol',badge:'Remodelada',loc:'Costa Careyes',size:'177 m²',sizeft:'1,910 sqft',beds:'2',baths:'2',price:'Precio Bajo Consulta',
+ desc:'Casita de 2 recámaras recién remodelada con acabados modernos, aire acondicionado central y espacio abierto de diseño contemporáneo.',
+ amen:['Recién remodelada','Aire acondicionado central','Comedor y sala abiertos','2 Suites con baño','Acabados modernos'],
+ imgs:['Caracol_1.JPG','Caracol_2.JPG','Caracol_3.JPG','Caracol_4.JPG','Caracol_5.JPG','Caracol_6.JPG','Caracol_7.JPG','Caracol_8.JPG','Caracol_9.JPG']},
+{id:'lote',name:'Lote 137',badge:'Terreno',loc:'Rincón de Careyes',size:'3,228 m²',sizeft:'34,743 sqft',beds:'—',baths:'—',price:'Precio Bajo Consulta',
+ desc:'Lote premium en Rincón de Careyes con todos los permisos de construcción aprobados y proyecto en curso. Oportunidad única para construir tu hogar soñado en una de las comunidades costeras más exclusivas de México.',
+ amen:['Ubicación: Rincón de Careyes','Todos los permisos aprobados','Proyecto en curso','Listo para construir','Proximidad al océano'],
+ imgs:['lote137_1.png','lote137_2.JPG','lote137_3.jpeg']},
+{id:'glorias',name:'Casa Glorias',badge:'Propiedad',loc:'Península de las Estrellas',size:'7,804 m²',sizeft:'83,991 sqft',beds:'8',baths:'Múltiples',price:'Precio Bajo Consulta',
+ desc:'Magnífica propiedad en la prestigiosa Península de las Estrellas. Con 8 suites, gimnasio privado, cine, canchas de tenis y raquetbol, vapor, cuartos de servicio y vistas panorámicas al océano.',
+ amen:['8 Suites','Gimnasio privado','Cine','Sala familiar','Cancha de raquetbol','Cancha de tenis','Cuarto de vapor','Oficina privada','Cuartos de servicio','Área de BBQ','Sala de masajes'],
+ imgs:['LasGlorias_1.JPG','LasGlorias_2','LasGlorias_3','LasGlorias_4','LasGlorias_5','LasGlorias_6','LasGlorias_7.jpg','LasGlorias_8','LasGlorias_9','LasGlorias_10','LasGlorias_11.jpg','LasGlorias_12','LasGlorias_13','LasGlorias_14','LasGlorias_15.jpg'],
+ video:'https://youtu.be/gFzDY3cc-5g'},
+{id:'condo',name:'Careyes Residences',badge:'Nuevo',loc:'Costa Careyes',size:'3 Pisos',sizeft:'Condo',beds:'4',baths:'Múltiples',price:'Precio Bajo Consulta',
+ desc:'Condominio nuevo en el exclusivo desarrollo Careyes Residences. 3 pisos con roof terrace, garage privado, gym y cuartos de servicio. Entrega estimada: 15 meses.',
+ amen:['Sótano: Gym, bodega, lavandería, 2 cuartos de servicio, TV room','Planta baja: Garage, sala-comedor, cocina, master suite, terraza, 2 suites','Planta alta: Suite + roof terrace','Entrega estimada: 15 meses','Acabados premium'],
+ imgs:[]}
+]};
+
+const TX={en:{st:'Available 24/7',ph:'Ask about properties...',hi:'Welcome to <strong>Pacific Luxury Villas</strong> Real Estate!\n\nExplore exclusive properties for sale in Costa Careyes — from charming casitas to magnificent estates.\n\nWhat would you like to do?',opts:['Browse Properties','About Careyes','Contact Marco']},
+es:{st:'Disponible 24/7',ph:'Pregunta sobre propiedades...',hi:'¡Bienvenido a <strong>Pacific Luxury Villas</strong> Real Estate!\n\nExplora propiedades exclusivas en venta en Costa Careyes — desde encantadoras casitas hasta magníficas propiedades.\n\n¿Qué te gustaría hacer?',opts:['Ver Propiedades','Sobre Careyes','Contactar a Marco']}};
+
+let S={lang:'en',open:false,init:false,gal:0};
+const $=id=>document.getElementById(id),L=()=>S.lang==='es',tx=k=>TX[S.lang][k];
+const fab=$('fab'),panel=$('panel'),bd=$('body'),inp=$('inp');
+
+fab.onclick=()=>tog();$('closeBtn').onclick=()=>tog(false);$('sbtn').onclick=()=>send();
+inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();send();}};
+document.querySelectorAll('.plb').forEach(b=>b.onclick=()=>{if(b.dataset.l===S.lang)return;S.lang=b.dataset.l;document.querySelectorAll('.plb').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('stx').textContent=tx('st');inp.placeholder=tx('ph');bd.innerHTML='';S.init=false;initChat();});
+
+function tog(f){const o=f!==undefined?f:!S.open;S.open=o;panel.classList.toggle('vis',o);fab.classList.toggle('open',o);if(o&&!S.init)setTimeout(initChat,300);if(o)setTimeout(()=>inp.focus(),350);}
+
+function addMsg(h,bot,o={}){const m=document.createElement('div');m.className=`m ${bot?'b':'u'}`;const a=document.createElement('div');a.className='ma';a.textContent=bot?'PLV':'●';const mb=document.createElement('div');mb.className='mb';const mx=document.createElement('div');mx.className='mx';mx.innerHTML=h.replace(/\n/g,'<br>');mb.appendChild(mx);if(o.qr?.length){const w=document.createElement('div');w.className='qr';o.qr.forEach(r=>{const b=document.createElement('button');b.className='qb';b.textContent=r;b.onclick=()=>handleQR(r);w.appendChild(b);});mb.appendChild(w);}m.appendChild(a);m.appendChild(mb);bd.appendChild(m);bd.scrollTop=bd.scrollHeight;}
+function addCard(h){const m=document.createElement('div');m.className='m b';const a=document.createElement('div');a.className='ma';a.textContent='PLV';const mb=document.createElement('div');mb.className='mb';mb.innerHTML=h;m.appendChild(a);m.appendChild(mb);bd.appendChild(m);bd.scrollTop=bd.scrollHeight;}
+function initChat(){S.init=true;addMsg(tx('hi'),true,{qr:tx('opts')});}
+
+function handleQR(r){addMsg(r,false);const lo=r.toLowerCase();
+if(lo.includes('browse')||lo.includes('ver prop')||lo.includes('propiedades'))return showProps();
+if(lo.includes('about')||lo.includes('sobre')||lo.includes('careyes'))return showAbout();
+if(lo.includes('contact')||lo.includes('contactar')||lo.includes('marco'))return showContact();
+if(lo.includes('request')||lo.includes('solicitar')||lo.includes('info'))return showForm();
+if(lo.includes('back')||lo.includes('volver')||lo.includes('menu'))return addMsg(tx('hi'),true,{qr:tx('opts')});
+processMsg(r);}
+function send(){const v=inp.value.trim();if(!v)return;inp.value='';addMsg(v,false);processMsg(v);}
+
+// ===== PROPERTIES LIST =====
+function showProps(){
+addMsg(L()?'Estas son nuestras propiedades exclusivas en venta:':'Here are our exclusive properties for sale:',true);
+P[S.lang].forEach((p,i)=>{setTimeout(()=>{
+const imgTag=p.imgs.length?`<img src="${IMG}${p.imgs[0]}" alt="${p.name}" onerror="this.parentNode.innerHTML='<div class=placeholder><span>${p.name}</span></div>'">`:`<div class="placeholder"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${p.name}</span></div>`;
+addCard(`<div class="pc" onclick="openSheet('${p.id}')"><div class="pci">${imgTag}<div class="pcb">${p.badge}</div></div><div class="pcn"><h4>${p.name}</h4><div class="pcsp"><span><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>${p.size}</span>${p.beds!=='—'?`<span><svg viewBox="0 0 24 24"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>${p.beds} ${L()?'Rec.':'Bed.'}</span>`:''}</div><div class="pcp">${p.price}</div></div></div>`);
+},i*250);});
+setTimeout(()=>{addMsg(L()?'Haz clic en cualquier propiedad para ver la ficha completa con galería de fotos.':'Click any property to see the full listing with photo gallery.',true,{qr:L()?['Solicitar información','Contactar a Marco','Volver']:['Request Info','Contact Marco','Back to Menu']});},P[S.lang].length*250+400);
+}
+
+// ===== OVERLAY PROPERTY SHEET =====
+window.openSheet=function(id){
+const p=P[S.lang].find(x=>x.id===id);if(!p)return;S.gal=0;
+const ov=$('overlay'),sh=$('sheet');
+const imgs=p.imgs.length?p.imgs:[];
+const galHTML=imgs.length?`
+<img id="galImg" src="${IMG}${imgs[0]}" alt="${p.name}" onerror="this.src='';this.style.display='none'">
+<button class="og-nav og-prev" onclick="galNav(-1,'${id}')">‹</button>
+<button class="og-nav og-next" onclick="galNav(1,'${id}')">›</button>
+<div class="og-counter" id="galCount">1 / ${imgs.length}</div>
+`:`<div class="placeholder">${p.name}</div>`;
+
+sh.innerHTML=`
+<div class="og"><div class="og-badge">${p.badge}</div><button class="og-close" onclick="closeSheet()">✕</button>${galHTML}</div>
+<div class="osb">
+<h2 class="os-name">${p.name}</h2>
+<div class="os-loc">${p.loc} · ${p.size} / ${p.sizeft}</div>
+<div class="os-specs">
+<div class="os-spec"><div class="v">${p.beds}</div><div class="l">${L()?'Recámaras':'Bedrooms'}</div></div>
+<div class="os-spec"><div class="v">${p.baths}</div><div class="l">${L()?'Baños':'Bathrooms'}</div></div>
+<div class="os-spec"><div class="v">${p.size}</div><div class="l">${L()?'Superficie':'Size'}</div></div>
+</div>
+<div class="os-desc">${p.desc}</div>
+<div class="os-section"><h5>${L()?'Características':'Features'}</h5><div class="os-amen">${p.amen.map(a=>'· '+a).join('<br>')}</div></div>
+${p.video?`<a href="${p.video}" target="_blank" class="os-video">▶ ${L()?'Ver video de la propiedad':'Watch property video'}</a>`:''}
+<div class="os-price">${p.price}</div>
+<button class="os-cta" onclick="closeSheet();showForm('${p.name}')">${L()?'Solicitar Información':'Request Information'}</button>
+</div>`;
+ov.classList.add('vis');
+};
+window.closeSheet=function(){$('overlay').classList.remove('vis');};
+window.galNav=function(dir,id){const p=P[S.lang].find(x=>x.id===id);if(!p||!p.imgs.length)return;S.gal=(S.gal+dir+p.imgs.length)%p.imgs.length;$('galImg').src=IMG+p.imgs[S.gal];$('galCount').textContent=`${S.gal+1} / ${p.imgs.length}`;};
+$('overlay').onclick=function(e){if(e.target===this)closeSheet();};
+
+// ===== LEAD FORM =====
+window.showForm=function(propName){
+const l=L();const opts=P[S.lang].map(p=>`<option value="${p.name}" ${p.name===propName?'selected':''}>${p.name}</option>`).join('');
+addCard(`<div class="qf"><h4>${l?'Solicitar Información':'Request Information'}</h4><div class="fs">${l?'Completa tus datos y Marco te contactará':'Fill in your details and Marco will contact you'}</div>
+<div class="fr"><div class="fg"><label>${l?'Nombre':'Name'}</label><input type="text" id="lN" placeholder="${l?'Nombre completo':'Full name'}"></div><div class="fg"><label>Email</label><input type="email" id="lE"></div></div>
+<div class="fg"><label>${l?'Teléfono / WhatsApp':'Phone / WhatsApp'}</label><input type="tel" id="lP" placeholder="+1..."></div>
+<div class="fg"><label>${l?'Propiedad de Interés':'Property of Interest'}</label><select id="lPr"><option value="">${l?'Selecciona...':'Select...'}</option>${opts}<option value="General">${l?'Información general':'General inquiry'}</option></select></div>
+<div class="fg"><label>${l?'Mensaje':'Message'}</label><textarea id="lM" placeholder="${l?'Cuéntanos qué buscas...':'Tell us what you\'re looking for...'}"></textarea></div>
+<button class="qc" onclick="sendLead()">${l?'Enviar Solicitud':'Send Request'}</button></div>`);
+};
+
+window.sendLead=function(){
+const l=L(),nm=$('lN').value,em=$('lE').value,ph=$('lP')?.value||'',pr=$('lPr').value,ms=$('lM')?.value||'';
+if(!nm||!em){alert(l?'Completa nombre y email':'Please fill name and email');return;}
+let txt=`REAL ESTATE INQUIRY — Pacific Luxury Villas\n${'='.repeat(40)}\nName: ${nm}\nEmail: ${em}\n${ph?'Phone: '+ph+'\n':''}Property: ${pr||'General'}\n${ms?'Message: '+ms+'\n':''}---\nPLV Real Estate Assistant · pacificluxuryvillas.com · Powered by wdstudio.agency`;
+const wa=`https://api.whatsapp.com/send?phone=${C.WA.replace('+','')}&text=${encodeURIComponent(txt)}`;
+if(C.APPS_SCRIPT)fetch(C.APPS_SCRIPT,{method:'POST',mode:'no-cors',body:JSON.stringify({type:'real_estate',name:nm,email:em,phone:ph,property:pr,notes:ms,lang:S.lang})}).catch(()=>{});
+addMsg(l?`¡Gracias, ${nm}! Tu solicitud sobre <strong>${pr||'propiedades en Careyes'}</strong> ha sido enviada. Marco te contactará pronto.`:`Thank you, ${nm}! Your inquiry about <strong>${pr||'Careyes properties'}</strong> has been sent. Marco will contact you shortly.`,true);
+setTimeout(()=>{addCard(`<div class="sbtns"><a href="${wa}" target="_blank" class="sb sb-wa">WhatsApp Marco</a><a href="mailto:${C.EMAIL}?subject=${encodeURIComponent('Property Inquiry: '+(pr||'General'))}&body=${encodeURIComponent(txt)}" class="sb sb-em">Send Email</a></div>`);},200);
+setTimeout(()=>{addMsg(l?'¿Te gustaría ver más propiedades?':'Would you like to see more properties?',true,{qr:tx('opts')});},700);
+};
+
+// ===== ABOUT =====
+function showAbout(){addMsg(L()?'Costa Careyes es un destino único en la costa del Pacífico de México donde el lujo, la naturaleza y la exclusividad se encuentran en perfecta armonía.\n\nUbicada entre Puerto Vallarta y Manzanillo, es una comunidad internacional que valora la belleza, la privacidad y la conexión profunda con la naturaleza.\n\n<strong>Poseer una propiedad aquí es más que una inversión</strong> — es formar parte de una comunidad cosmopolita y vibrante.':'Costa Careyes is a one-of-a-kind destination on Mexico\'s Pacific Coast where luxury, nature, and exclusivity come together in perfect harmony.\n\nLocated between Puerto Vallarta and Manzanillo, it\'s an international community that values beauty, privacy, and a deep connection with nature.\n\n<strong>Owning property here is more than an investment</strong> — it\'s becoming part of a vibrant, cosmopolitan community.',true,{qr:L()?['Ver Propiedades','Contactar a Marco']:['Browse Properties','Contact Marco']});}
+
+// ===== CONTACT =====
+function showContact(){addCard(`<div class="ccrd"><h4>Marco Lorelli</h4><p style="font-size:11px;color:var(--stone-light);margin-bottom:10px">${L()?'Rentas / Bienes Raíces / Administración':'Rentals / Real Estate / Property Management'}</p>
+<div class="ccrd-r"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+52 1 (322) 140 1809</span></div>
+<div class="ccrd-r"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>+52 (315) 351 2042</span></div>
+<div class="ccrd-r"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg><a href="mailto:${C.EMAIL}">${C.EMAIL}</a></div>
+<div class="ccrd-r"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><a href="https://pacificluxuryvillas.com" target="_blank">pacificluxuryvillas.com</a></div>
+<div class="ccrd-r"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><a href="https://instagram.com/plvincareyes" target="_blank">@plvincareyes</a></div></div>`);
+setTimeout(()=>{addMsg(L()?'¿Te gustaría ver propiedades o solicitar información?':'Would you like to browse properties or request information?',true,{qr:L()?['Ver Propiedades','Solicitar información']:['Browse Properties','Request Info']});},300);}
+
+// ===== MSG ROUTER =====
+function processMsg(msg){const lo=msg.toLowerCase();
+if(lo.includes('propiedad')||lo.includes('property')||lo.includes('venta')||lo.includes('sale')||lo.includes('buy')||lo.includes('comprar')||lo.includes('browse')||lo.includes('ver'))return showProps();
+if(lo.includes('sol')&&!lo.includes('solicitar'))return window.openSheet('sol');
+if(lo.includes('caracol'))return window.openSheet('caracol');
+if(lo.includes('lote')||lo.includes('lot')||lo.includes('137')||lo.includes('terreno')||lo.includes('land'))return window.openSheet('lote');
+if(lo.includes('gloria'))return window.openSheet('glorias');
+if(lo.includes('condo')||lo.includes('residenc'))return window.openSheet('condo');
+if(lo.includes('contact')||lo.includes('marco')||lo.includes('whatsapp'))return showContact();
+if(lo.includes('careyes')||lo.includes('about')||lo.includes('donde')||lo.includes('where')||lo.includes('ubicaci'))return showAbout();
+if(lo.includes('info')||lo.includes('interest')||lo.includes('request')||lo.includes('solicitar'))return showForm();
+if(lo.includes('precio')||lo.includes('price')||lo.includes('cost')||lo.includes('cuanto')||lo.includes('how much')){addMsg(L()?'Todas nuestras propiedades manejan precios bajo consulta para asegurar la mejor negociación. Solicita información y Marco te dará los detalles.':'All properties are priced upon request to ensure the best negotiation. Request info and Marco will provide details.',true,{qr:L()?['Ver Propiedades','Solicitar información']:['Browse Properties','Request Info']});return;}
+if(lo.includes('hola')||lo.includes('hello')||lo.includes('hi')||lo.includes('hey')||lo.includes('buenos')){addMsg(L()?'¡Hola! Bienvenido a Pacific Luxury Villas Real Estate. ¿En qué puedo ayudarte?':'Hello! Welcome to Pacific Luxury Villas Real Estate. How can I help?',true,{qr:tx('opts')});return;}
+if(lo.includes('gracias')||lo.includes('thank')){addMsg(L()?'¡Con gusto! ¿Algo más en lo que pueda ayudarte?':'My pleasure! Anything else I can help with?',true,{qr:tx('opts')});return;}
+addMsg(L()?'Puedo ayudarte a explorar propiedades exclusivas en Careyes.':'I can help you explore exclusive properties in Careyes.',true,{qr:tx('opts')});}
+
+setTimeout(()=>tog(true),2500);
+console.log('PLV Real Estate Assistant v2.0 · wdstudio.agency');
+</script>
+</body>
+</html>
