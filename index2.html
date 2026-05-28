@@ -234,11 +234,11 @@ const $=id=>document.getElementById(id),L=()=>S.lang==='es',tx=k=>TX[S.lang][k];
 const fab=$('fab'),panel=$('panel'),bd=$('body'),inp=$('inp');
 
 fab.onclick=()=>tog();$('closeBtn').onclick=()=>tog(false);$('sbtn').onclick=()=>send();
+fab.onclick=()=>{try{window.parent.postMessage('plv-click','*')}catch(e){}tog();};
 inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();send();}};
 document.querySelectorAll('.plb').forEach(b=>b.onclick=()=>{if(b.dataset.l===S.lang)return;S.lang=b.dataset.l;document.querySelectorAll('.plb').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('stx').textContent=tx('st');inp.placeholder=tx('ph');bd.innerHTML='';S.init=false;initChat();});
 
-function tog(f){const o=f!==undefined?f:!S.open;S.open=o;panel.classList.toggle('vis',o);fab.classList.toggle('open',o);if(o&&!S.init)setTimeout(initChat,300);if(o)setTimeout(()=>inp.focus(),350);}
-
+function tog(f){var o=f!==undefined?f:!S.open;S.open=o;panel.classList.toggle('vis',o);fab.classList.toggle('open',o);if(o&&!S.init)setTimeout(initChat,300);if(o)setTimeout(()=>inp.focus(),350);try{window.parent.postMessage(o?'plv-click':'plv-close','*')}catch(e){}}
 function addMsg(h,bot,o={}){const m=document.createElement('div');m.className=`m ${bot?'b':'u'}`;const a=document.createElement('div');a.className='ma';a.textContent=bot?'PLV':'●';const mb=document.createElement('div');mb.className='mb';const mx=document.createElement('div');mx.className='mx';mx.innerHTML=h.replace(/\n/g,'<br>');mb.appendChild(mx);if(o.qr?.length){const w=document.createElement('div');w.className='qr';o.qr.forEach(r=>{const b=document.createElement('button');b.className='qb';b.textContent=r;b.onclick=()=>handleQR(r);w.appendChild(b);});mb.appendChild(w);}m.appendChild(a);m.appendChild(mb);bd.appendChild(m);bd.scrollTop=bd.scrollHeight;}
 function addCard(h){const m=document.createElement('div');m.className='m b';const a=document.createElement('div');a.className='ma';a.textContent='PLV';const mb=document.createElement('div');mb.className='mb';mb.innerHTML=h;m.appendChild(a);m.appendChild(mb);bd.appendChild(m);bd.scrollTop=bd.scrollHeight;}
 function initChat(){S.init=true;addMsg(tx('hi'),true,{qr:tx('opts')});}
