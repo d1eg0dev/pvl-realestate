@@ -200,14 +200,14 @@ main h2{font-size:clamp(2.2rem,4.6vw,3.6rem);max-width:18ch}
 .ihero{
   background:
     linear-gradient(90deg,rgba(26,26,46,.92) 0%,rgba(26,26,46,.65) 50%,rgba(26,26,46,.3) 100%),
-    url("https://pacificluxuryvillas.com/wp-content/uploads/2025/02/c786b40e-f0c0-44be-92f8-7989dda9060c.jpg") center/cover no-repeat,
+    url("../images/cover-index.jpg") center/cover no-repeat,
     var(--navy);
 }
 @media(max-width:760px){
   .ihero{
     background:
       linear-gradient(180deg,rgba(26,26,46,.6) 0%,rgba(26,26,46,.9) 100%),
-      url("https://pacificluxuryvillas.com/wp-content/uploads/2025/02/c786b40e-f0c0-44be-92f8-7989dda9060c.jpg") center/cover no-repeat,
+      url("../images/cover-index.jpg") center/cover no-repeat,
       var(--navy);
   }
 }
