@@ -195,3 +195,38 @@ main h2{font-size:clamp(2.2rem,4.6vw,3.6rem);max-width:18ch}
 @media(max-width:640px){.wa-float{padding:8px}.wa-float .txt{display:none}.wa-float .ico{width:48px;height:48px}}
 @media(prefers-reduced-motion:no-preference){.wa-float{animation:rise .8s cubic-bezier(.2,.7,.2,1) both 1.2s}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ===== HERO DEL CATÁLOGO CON FOTO ===== */
+.ihero{
+  background:
+    linear-gradient(90deg,rgba(26,26,46,.92) 0%,rgba(26,26,46,.65) 50%,rgba(26,26,46,.3) 100%),
+    url("https://pacificluxuryvillas.com/wp-content/uploads/2025/02/c786b40e-f0c0-44be-92f8-7989dda9060c.jpg") center/cover no-repeat,
+    var(--navy);
+}
+@media(max-width:760px){
+  .ihero{
+    background:
+      linear-gradient(180deg,rgba(26,26,46,.6) 0%,rgba(26,26,46,.9) 100%),
+      url("https://pacificluxuryvillas.com/wp-content/uploads/2025/02/c786b40e-f0c0-44be-92f8-7989dda9060c.jpg") center/cover no-repeat,
+      var(--navy);
+  }
+}
+
+/* ===== PORTADA DEL CONDO 116 EN LAS TARJETAS ===== */
+.card[href*="condo-116/"] .card-img{
+  background:url("../images/portada-condo.jpg") center/cover no-repeat,var(--navy);
+}
+.card[href*="condo-116/"] .card-img video,
+.card[href*="condo-116/"] .card-img .hero-ph{display:none}
+
+/* ===== LOGO ORIGINAL PLV ===== */
+.mark,.foot .mark{
+  display:block;width:170px;height:48px;
+  font-size:0;color:transparent;
+  background:url("https://pacificluxuryvillas.com/wp-content/uploads/2024/11/Logo-PLV.png") left center/contain no-repeat;
+}
+.foot .mark{width:210px;height:64px}
+@media(max-width:760px){.nav .mark{width:130px;height:40px}}
+
+/* Si el logo es oscuro y no se ve sobre el azul, quita los comentarios de la siguiente línea: */
+/* .mark{filter:brightness(0) invert(1)} */
