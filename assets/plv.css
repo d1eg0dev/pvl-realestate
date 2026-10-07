@@ -230,3 +230,14 @@ main h2{font-size:clamp(2.2rem,4.6vw,3.6rem);max-width:18ch}
 
 /* Si el logo es oscuro y no se ve sobre el azul, quita los comentarios de la siguiente línea: */
 /* .mark{filter:brightness(0) invert(1)} */
+
+/* ===== v2: precio a solicitud, comunidad, 9 propiedades ===== */
+.hero .price .por2{display:block;font-family:var(--sans);font-size:13px;color:rgba(255,255,255,.7);margin:8px 0 0}
+.cta .por2{font-size:15px;color:var(--navy);margin:-6px 0 14px}
+.ihero-copy p{max-width:54ch;color:rgba(250,247,242,.78)}
+.ihero-copy p+p{margin-top:.9em;color:rgba(250,247,242,.95)}
+.band .arrival{font-family:var(--serif);font-style:italic;font-size:clamp(1.6rem,2.8vw,2.2rem);line-height:1.25;color:var(--coral);margin-top:32px;max-width:24ch}
+@media(min-width:861px){
+  .catalog .card:last-child:nth-child(4n+1){grid-column:1/-1}
+  .catalog .card:last-child:nth-child(4n+1) .card-img{aspect-ratio:21/9}
+}
